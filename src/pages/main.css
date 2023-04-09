@@ -1,0 +1,15 @@
+.upArrow {
+    position: relative;
+    bottom: 8px;
+}
+
+.downArrow {
+     position: relative;
+    top: 4px;
+}
+
+.inputField{
+    padding: 2px 3px;
+    border: 1px solid #00000057;
+    margin: 8px 0;
+}
