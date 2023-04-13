@@ -37,7 +37,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
             <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
                     <tr>
-
+                        {/* ID Field  */}
                         <th scope="col" className="px-6 py-3 cursor-pointer">
                             <div>
                                 {/* <input name='id' type='text' className="inputField" style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} /> */}
@@ -45,10 +45,12 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                                 <input type="text" name='id' style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} className="font-normal bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-300 focus:border-blue-300 block w-full py-1 px-1.5 mb-3 " placeholder="ID" />
                             </div>
 
-                            <div onClick={() => sorting(`id`)} className=''>
-                                {order['id'] === '' ? '' : order['id'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />}ID
-                            </div>
+                            <div onClick={() => sorting(`id`)}>
+                                {/* <ArrowDropUpIcon className={order['id'] === 'ASC' ? 'upArrow visible' : 'invisible'} />
+                                <ArrowDropDownOutlinedIcon className={order['id'] === 'DSC' ? 'upArrow visible' : 'invisible'} /> */}
 
+                                {order['id'] === '' ? '' : order['id'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['id'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} ID
+                            </div>
                         </th>
 
                         <th scope="col" className="px-6 py-3 cursor-pointer">
@@ -59,7 +61,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('name')} className=''>
-                                {order['name'] === '' ? '' : order['name'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />} Name
+                                {order['name'] === '' ? '' : order['name'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['name'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}Name
                             </div>
 
                         </th>
@@ -72,7 +74,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('symbol')} className=''>
-                                {order['symbol'] === '' ? '' : order['symbol'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />} Symbol
+                                {order['symbol'] === '' ? '' : order['symbol'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['symbol'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}Symbol
                             </div>
 
                         </th>
@@ -86,7 +88,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('rank')} className=''>
-                                {order['rank'] === '' ? '' : order['rank'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />}  Ranking
+                                {order['rank'] === '' ? '' : order['rank'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['rank'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}Ranking
                             </div>
 
                         </th>
@@ -99,7 +101,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('price')} className=''>
-                                {order['price'] === '' ? '' : order['price'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />} Price
+                                {order['price'] === '' ? '' : order['price'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['price'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} Price
                             </div>
 
                         </th>
@@ -112,7 +114,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('percent_24hChange')} className=''>
-                                {order['percent_24hChange'] === '' ? '' : order['percent_24hChange'] === 'ASC' ? <ArrowDropUpIcon className='upArrow' /> : <ArrowDropDownOutlinedIcon className='downArrow' />} 24H Change
+                                {order['percent_24hChange'] === '' ? '' : order['percent_24hChange'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['percent_24hChange'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}24H Change
                             </div>
 
                         </th>

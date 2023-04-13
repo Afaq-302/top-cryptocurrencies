@@ -37,7 +37,7 @@ export async function getServerSideProps() {
 
 function allCoins(props) {
 
-  const [coins, setCoins] = useState([props.data]);
+  const [coins, setCoins] = useState([]);
   const [search, setSearch] = useState({
     col: 'name',
     value: ''
@@ -78,7 +78,7 @@ function allCoins(props) {
         {isLoading ? <BeatLoader color="#36d7b7" margin={4} className='text-center mt-32' /> :
           <div className="relative overflow-x-auto mt-10">
 
-            <Coin coins={props.data} handleSearchInput={handleChange} searchInput={search} setCoins={setCoins} />
+            <Coin coins={coins} handleSearchInput={handleChange} searchInput={search} setCoins={setCoins} />
 
           </div>
         }
