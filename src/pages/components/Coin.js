@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
+import { Assistant, AssistantDirection } from '@mui/icons-material';
+import { assetPrefix } from '../../../next.config';
 
 
 export default function Coin({ coins, setCoins, searchInput, handleSearchInput }) {
-
+    const [priceSymbol, setPriceSymbol] = useState('$');
     // let coinPrice = coin?.quote?.USD?.price;
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -32,8 +34,45 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
         setOrder(order);
     }
 
+    const renderPricesByCoin = (coinName) => {
+
+        // console.log(coinName);
+        // const [price] = coins?.filter(coin => {
+        //     return coin.symbol == coinName;
+        // })
+
+        var [{ price }] = coins.filter(coin => {
+            return coin.symbol == coinName;
+        });
+
+
+        var coinsData = [];
+        for (var c of coins) {
+            c.price = c.price / price;
+            coinsData.push(c);
+        }
+        if (coinName == 'ETH') {
+            setPriceSymbol('Ξ')
+        } else if (coinName == 'BTC') {
+            setPriceSymbol('฿')
+        }
+
+        setCoins(coinsData);
+
+        // console.log(coinsData)
+    }
+
+
+
+
+
     return (
         <>
+            <p className='inline font-semibold py-2 px-4 '>Click any of the button to show prices in that pair:</p>
+            <button onClick={() => renderPricesByCoin('ETH')} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded'>ETH('Ξ')</button>
+            <button onClick={() => renderPricesByCoin('BTC')} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded ml-3 mb-3'>BTC('฿')</button>
+            {/* <button onClick={() => renderPricesByCoin('GBP')} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-3'>GBP</button> */}
+
             <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
                     <tr>
@@ -101,7 +140,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                             </div>
 
                             <div onClick={() => sorting('price')} className=''>
-                                {order['price'] === '' ? '' : order['price'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['price'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} Price
+                                {order['price'] === '' ? '' : order['price'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['price'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} Price in {priceSymbol}
                             </div>
 
                         </th>
@@ -141,8 +180,8 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                                         {coin.rank}
                                     </td>
                                     <td className="px-6 py-4">
-                                        ${
-                                            parseInt(coin?.price) >= 1 ? coin?.price.toFixed(2) : coin?.price.toFixed(5)
+                                        {priceSymbol} {
+                                            parseInt(coin?.price) >= 1 ? coin?.price.toFixed(2) : coin?.price.toFixed(6)
                                         }
                                     </td>
 
