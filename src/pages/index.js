@@ -48,6 +48,7 @@ function allCoins(props) {
   useEffect(() => {
     setCoins(props.data);
     setIsLoading(false);
+
   }, []);
 
 

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownOutlinedIcon from '@mui/icons-material/ArrowDropDownOutlined';
-import { Assistant, AssistantDirection } from '@mui/icons-material';
-import { assetPrefix } from '../../../next.config';
-
+import axios from 'axios';
 
 export default function Coin({ coins, setCoins, searchInput, handleSearchInput }) {
+    
     const [priceSymbol, setPriceSymbol] = useState('$');
-    // let coinPrice = coin?.quote?.USD?.price;
-
     const [searchTerm, setSearchTerm] = useState('');
     const [coinData, setCoinData] = useState(coins);
+    const [otherCurrency, setOtherCurrency] = useState('');
+    const [buttonDisable, setButtonDisable] = useState({ disabled: false })
+
 
     const [order, setOrder] = useState({
         id: '',
@@ -34,44 +34,67 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
         setOrder(order);
     }
 
-    const renderPricesByCoin = (coinName) => {
+    const renderPricesByCoin = async (coin) => {
 
-        // console.log(coinName);
-        // const [price] = coins?.filter(coin => {
-        //     return coin.symbol == coinName;
-        // })
+        if (coin.type == 'fiat') {
+            var WISE_API_ENDPOINT = `https://api.wise.com/v1/rates?source=GBP&target=USD`;
+            var config = {
+                headers: {
+                    "Authorization": "Basic OGNhN2FlMjUtOTNjNS00MmFlLThhYjQtMzlkZTFlOTQzZDEwOjliN2UzNmZkLWRjYjgtNDEwZS1hYzc3LTQ5NGRmYmEyZGJjZA=="
+                }
+            }
+            var res = await axios.get(WISE_API_ENDPOINT, config);
+            var gbpPrice = res.data[0].rate
+            // var data = setOtherCurrency(res.data[0].rate)
 
-        var [{ price }] = coins.filter(coin => {
-            return coin.symbol == coinName;
-        });
+
+            let [{ price }] = coins.filter(c => {
+                return c.symbol == coin.name;
+            });
+
+            let coinsData = [];
+
+            for (let c of coins) {
+                c.price = c.price / gbpPrice;
+                coinsData.push(c);
+            }
+
+            setCoins(coinsData);
+            setPriceSymbol('£');
+            setButtonDisable({ disabled: true });
+        };
 
 
-        var coinsData = [];
-        for (var c of coins) {
-            c.price = c.price / price;
-            coinsData.push(c);
+        if (coin.type == 'crypto') {
+            let [{ price }] = coins.filter(c => {
+                return c.symbol == coin.name;
+            });
+
+            //Array for the Changed prices List
+            let coinsData = [];
+            for (let c of coins) {
+                c.price = c.price / price;
+                coinsData.push(c);
+            }
+
+            if (coin.name == 'ETH') {
+                setPriceSymbol('Ξ')
+            } else if (coin.name == 'BTC') {
+                setPriceSymbol('฿')
+            }
+            setCoins(coins);
+            setButtonDisable({ disabled: false });
+
         }
-        if (coinName == 'ETH') {
-            setPriceSymbol('Ξ')
-        } else if (coinName == 'BTC') {
-            setPriceSymbol('฿')
-        }
 
-        setCoins(coinsData);
-
-        // console.log(coinsData)
     }
-
-
-
-
 
     return (
         <>
             <p className='inline font-semibold py-2 px-4 '>Click any of the button to show prices in that pair:</p>
-            <button onClick={() => renderPricesByCoin('ETH')} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded'>ETH('Ξ')</button>
-            <button onClick={() => renderPricesByCoin('BTC')} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded ml-3 mb-3'>BTC('฿')</button>
-            {/* <button onClick={() => renderPricesByCoin('GBP')} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-3'>GBP</button> */}
+            <button onClick={() => renderPricesByCoin({ name: 'ETH', type: 'crypto' })} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded'>ETH('Ξ')</button>
+            <button onClick={() => renderPricesByCoin({ name: 'BTC', type: 'crypto' })} className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-4 rounded ml-3 mb-3'>BTC('฿')</button>
+            <button onClick={() => renderPricesByCoin({ name: 'BTC', type: 'fiat' })} disabled={buttonDisable.disabled} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded ml-3 disabled:bg-slate-400'>GBP('£')</button>
 
             <table className="w-full text-sm text-left text-gray-500 light:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
@@ -161,7 +184,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput }
                 </thead>
                 <tbody>
                     {
-                        coins?.filter((coin) => {
+                        coinData?.filter((coin) => {
                             return coin[searchInput.col].toString().toLowerCase().includes(searchInput.value.toLowerCase());
                         }).map((coin, index) => (
 
