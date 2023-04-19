@@ -26,18 +26,42 @@ export async function getServerSideProps() {
       });
     }
 
+    var renderPricesData = [
+      { symbol: 'BTC', type: 'crypto' },
+      { symbol: 'ETH', type: 'crypto' },
+      { symbol: 'GBP', type: 'fiat' }
+    ];
+
+    for (let c of renderPricesData) {
+        if (c.type == 'crypto') {
+          let [{ price }] = filteredData.filter(coin => {
+            return coin.symbol == c.symbol;
+          });
+          c.price = price;
+        }
+        if (c.type == 'fiat') {
+          var res = await axios.get(`https://api.wise.com/v1/rates?source=${c.symbol}&target=USD`, {
+            headers: {
+                "Authorization": "Basic OGNhN2FlMjUtOTNjNS00MmFlLThhYjQtMzlkZTFlOTQzZDEwOjliN2UzNmZkLWRjYjgtNDEwZS1hYzc3LTQ5NGRmYmEyZGJjZA=="
+            }
+          });
+          c.price = res.data[0].rate;
+        }
+    }
+
     return {
       props: {
-        data: filteredData
+        filteredData,
+        renderPricesData
       },
     };
 
   }
 }
 
-function allCoins(props) {
-
-  const [coins, setCoins] = useState([]);
+function allCoins({ filteredData, renderPricesData}) {
+  const [coins, setCoins] = useState(filteredData);
+  const [currencyData, setCurrencyData] = useState(filteredData);
   const [search, setSearch] = useState({
     col: 'name',
     value: ''
@@ -46,9 +70,7 @@ function allCoins(props) {
   // CMC_API_KEY=ce18122d-887f-48a6-8e76-2c124229e86c
 
   useEffect(() => {
-    setCoins(props.data);
     setIsLoading(false);
-
   }, []);
 
 
@@ -79,7 +101,7 @@ function allCoins(props) {
         {isLoading ? <BeatLoader color="#36d7b7" margin={4} className='text-center mt-32' /> :
           <div className="relative overflow-x-auto mt-10">
 
-            <Coin coins={coins} handleSearchInput={handleChange} searchInput={search} setCoins={setCoins} />
+            <Coin coins={coins} currencyData={currencyData} renderPricesData={renderPricesData} handleSearchInput={handleChange} searchInput={search} setCoins={setCoins} />
 
           </div>
         }
