@@ -36,7 +36,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput, 
         var [{ price }] = renderPricesData.filter(c => {
             return c.symbol == coin.name;
         });
-        
+
         //Array for the Changed prices List
         let updatedCoins = [];
         for (let c of currencyData) {
@@ -63,21 +63,33 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput, 
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 light:bg-gray-700 light:text-gray-400">
                     <tr>
                         {/* ID Field  */}
-                        <th scope="col" className="px-6 py-3 cursor-pointer">
-                            <div>
-                                {/* <input name='id' type='text' className="inputField" style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} /> */}
+                        {/* <th scope="col" className="px-6 py-3 cursor-pointer">
+                            <div> */}
+                        {/* <input name='id' type='text' className="inputField" style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} /> */}
 
-                                <input type="text" name='id' style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} className="font-normal bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-300 focus:border-blue-300 block w-full py-1 px-1.5 mb-3 " placeholder="ID" />
-                            </div>
+                        {/* <input type="text" name='id' style={{ width: '30%' }} onChange={(e) => handleSearchInput('id', e.target.value)} className="font-normal bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-300 focus:border-blue-300 block w-full py-1 px-1.5 mb-3 " placeholder="ID" />
+                            </div> */}
 
-                            <div onClick={() => sorting(`id`)}>
-                                {/* <ArrowDropUpIcon className={order['id'] === 'ASC' ? 'upArrow visible' : 'invisible'} />
+                        {/* <div onClick={() => sorting(`id`)}> */}
+                        {/* <ArrowDropUpIcon className={order['id'] === 'ASC' ? 'upArrow visible' : 'invisible'} />
                                 <ArrowDropDownOutlinedIcon className={order['id'] === 'DSC' ? 'upArrow visible' : 'invisible'} /> */}
 
-                                {order['id'] === '' ? '' : order['id'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['id'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} ID
+                        {/* {order['id'] === '' ? '' : order['id'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['id'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''} ID
                             </div>
-                        </th>
+                        </th> */}
+                        <th scope="col" className="px-6 py-3 cursor-pointer">
 
+                            <div>
+                                {/* <input name='rank' type='text' className="inputField" style={{ width: '30%' }} onChange={(e) => handleSearchInput('rank', e.target.value)} /> */}
+
+                                <input type="text" name='rank' style={{ width: '50%' }} onChange={(e) => handleSearchInput('rank', e.target.value)} className="font-normal bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-300 focus:border-blue-300 block w-full py-1 px-1.5 mb-3 " placeholder="Rank" />
+                            </div>
+
+                            <div onClick={() => sorting('rank')} className=''>
+                                {order['rank'] === '' ? '' : order['rank'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['rank'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}Ranking
+                            </div>
+
+                        </th>
                         <th scope="col" className="px-6 py-3 cursor-pointer">
                             <div>
                                 {/* <input name='name' type='text' className="inputField" style={{ width: '50%' }} onChange={(e) => handleSearchInput('name', e.target.value)} /> */}
@@ -104,19 +116,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput, 
 
                         </th>
 
-                        <th scope="col" className="px-6 py-3 cursor-pointer">
 
-                            <div>
-                                {/* <input name='rank' type='text' className="inputField" style={{ width: '30%' }} onChange={(e) => handleSearchInput('rank', e.target.value)} /> */}
-
-                                <input type="text" name='rank' style={{ width: '50%' }} onChange={(e) => handleSearchInput('rank', e.target.value)} className="font-normal bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-300 focus:border-blue-300 block w-full py-1 px-1.5 mb-3 " placeholder="Rank" />
-                            </div>
-
-                            <div onClick={() => sorting('rank')} className=''>
-                                {order['rank'] === '' ? '' : order['rank'] === 'ASC' ? <ArrowDropUpIcon className='upArrow block' /> : order['rank'] === 'DSC' ? <ArrowDropDownOutlinedIcon className='downArrow block' /> : ''}Ranking
-                            </div>
-
-                        </th>
                         <th scope="col" className="px-6 py-3 cursor-pointer">
 
                             <div>
@@ -153,8 +153,11 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput, 
 
                             <>
                                 <tr key={coin.id} className="bg-white border-b light:bg-gray-800 light:border-gray-700">
-                                    <td className="px-6 py-4 font-medium text-black-900 whitespace-nowrap light:text-white">
+                                    {/* <td className="px-6 py-4 font-medium text-black-900 whitespace-nowrap light:text-white">
                                         {coin.id}.
+                                    </td> */}
+                                    <td className="px-6 py-4">
+                                        {coin.rank}
                                     </td>
                                     <th scope="row" className="px-6 py-4 font-medium text-black-900 whitespace-nowrap light:text-white">
                                         {coin.name}
@@ -162,9 +165,7 @@ export default function Coin({ coins, setCoins, searchInput, handleSearchInput, 
                                     <td className="px-6 py-4">
                                         {coin.symbol}
                                     </td>
-                                    <td className="px-6 py-4">
-                                        {coin.rank}
-                                    </td>
+
                                     <td className="px-6 py-4">
                                         {priceSymbol} {
                                             parseInt(coin?.price) >= 1 ? coin?.price.toFixed(2) : coin?.price.toFixed(6)
